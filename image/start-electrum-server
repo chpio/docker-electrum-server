@@ -1,0 +1,5 @@
+#!/bin/sh -ex
+
+chown electrum-server:electrum-server -R /data/electrum-server
+
+exec gosu electrum-server:electrum-server run_electrum_server.py --conf=/etc/electrum-server.conf $@
