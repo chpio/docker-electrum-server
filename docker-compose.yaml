@@ -1,0 +1,18 @@
+version: "2"
+services:
+
+  bitcoind:
+    image: chpio/bitcoind:latest
+    volumes:
+      - "./data-bitcoind:/data/bitcoind"
+    network_mode: "service:electrum-server"
+    command:
+      - "-txindex=1"
+      - "-rest"
+
+  electrum-server:
+    image: chpio/electrum-server:latest
+    volumes:
+      - "./data-electrum-server:/data/electrum-server"
+    ports:
+      - "50001:50001"
