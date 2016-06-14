@@ -23,7 +23,7 @@ RUN { \
 	# download
 	git clone https://github.com/spesmilo/electrum-server.git /tmp/electrum-server; \
 	cd /tmp/electrum-server; \
-	git checkout cc97c328469fbdc65b3034fea20f50d3ba8396df; \
+	git checkout 248e3b28bdcc23c8628659321697b6c8eee40045; \
 
 	python setup.py install; \
 
