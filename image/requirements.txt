@@ -1,0 +1,4 @@
+aiohttp==1.*
+pylru==1.*
+plyvel==0.9.*
+irc==15.*

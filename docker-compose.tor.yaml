@@ -19,6 +19,6 @@ services:
   electrum-server:
     image: chpio/electrum-server:latest
     volumes:
-      - "./data-electrum-server:/data/electrum-server"
+      - "./data-electrumx-server:/data/electrumx-server"
     ports:
       - "50001:50001"

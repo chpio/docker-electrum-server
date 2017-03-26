@@ -1,33 +1,33 @@
-FROM chpio/gosu:jessie
+FROM python:3-slim
 
-RUN { \
-	set -ex; \
-
+RUN { set -ex; \
+	echo "deb http://ftp.debian.org/debian jessie-backports main" > /etc/apt/sources.list.d/bp.list; \
 	apt-get update; \
-	apt-get install --no-install-recommends -y \
-		python python-openssl python-leveldb; \
-	rm -rf /var/lib/apt/lists/*; \
+	apt-get install --no-install-recommends -y ca-certificates libleveldb1; \
+	apt-get install -t jessie-backports --no-install-recommends -y gosu; \
+	rm -rf /etc/apt/sources.list.d/bp.list /var/lib/apt/lists/*; \
 }
 
-RUN { \
-	set -ex; \
-
+COPY requirements.txt /tmp/
+RUN { set -ex; \
 	# add user & group
-	groupadd --system --gid 1000 electrum-server; \
-	useradd --system --uid 1000 --gid 1000 electrum-server; \
+	groupadd --system --gid 1000 electrumx-server; \
+	useradd --system --uid 1000 --gid 1000 electrumx-server; \
 
-	BUILD_DEPS="git ca-certificates python-setuptools build-essential python-dev libleveldb-dev"; \
+	BUILD_DEPS="git build-essential libleveldb-dev"; \
 	apt-get update; \
 	apt-get install --no-install-recommends -y $BUILD_DEPS; \
 
+	# install deps
+	pip install --no-cache-dir -r /tmp/requirements.txt; \
+
 	# download
-	git clone https://github.com/spesmilo/electrum-server.git /tmp/electrum-server; \
-	cd /tmp/electrum-server; \
-	git checkout 2f019ece2e1541eb60e652c7d3551c0dcf30c45e; \
+	git clone https://github.com/kyuupichan/electrumx.git /tmp/build --depth 1 --branch 1.0.4; \
+	cd /tmp/build; \
+	git checkout 9620aa8bb6dc93cc7e926ad744a096c287273719; \
 
-	python setup.py install; \
-
-	mv src run_electrum_server.py /usr/bin/; \
+	# install electrumx
+	mv server lib electrumx_server.py /usr/local/bin/; \
 
 	# clean up
 	apt-get purge -y $BUILD_DEPS; \
@@ -35,11 +35,7 @@ RUN { \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*; \
 }
 
-VOLUME /data/electrum-server
+VOLUME /data/electrumx-server
 
-COPY electrum-server.conf /etc/
-
-ENV PYTHON_EGG_CACHE /tmp/.python-eggs
-
-COPY start-electrum-server /usr/bin/
-ENTRYPOINT ["start-electrum-server"]
+COPY start_electrumx_server /usr/local/bin/
+CMD ["start_electrumx_server"]

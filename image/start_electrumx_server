@@ -1,0 +1,5 @@
+#!/bin/sh -ex
+
+chown electrumx-server:electrumx-server -R /data/electrumx-server
+
+exec gosu electrumx-server:electrumx-server electrumx_server.py $@
