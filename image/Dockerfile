@@ -22,9 +22,9 @@ RUN { set -ex; \
 	pip install --no-cache-dir -r /tmp/requirements.txt; \
 
 	# download
-	git clone https://github.com/kyuupichan/electrumx.git /tmp/build --depth 1 --branch 1.0.10; \
+	git clone https://github.com/kyuupichan/electrumx.git /tmp/build --depth 1 --branch 1.0.11; \
 	cd /tmp/build; \
-	git checkout 2fe67932c5feb12ae68a2a7b9c3b81e301fdcf47; \
+	git checkout 0cf4210a66d82377bf0d8350d84c658385db614f; \
 
 	# install electrumx
 	mv server lib electrumx_server.py /usr/local/bin/; \
