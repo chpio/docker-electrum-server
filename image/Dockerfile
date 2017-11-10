@@ -1,11 +1,8 @@
-FROM python:3-slim
+FROM python:3-slim-stretch
 
 RUN { set -ex; \
-	echo "deb http://ftp.debian.org/debian jessie-backports main" > /etc/apt/sources.list.d/bp.list; \
 	apt-get update; \
-	apt-get install --no-install-recommends -y ca-certificates libleveldb1; \
-	apt-get install -t jessie-backports --no-install-recommends -y gosu; \
-	rm -rf /etc/apt/sources.list.d/bp.list /var/lib/apt/lists/*; \
+	apt-get install --no-install-recommends -y ca-certificates libleveldb1v5 gosu; \
 }
 
 COPY requirements.txt /tmp/
